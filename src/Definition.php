@@ -12,12 +12,46 @@ class Definition implements DefinitionInterface
     /**
      * @var string|null
      */
-    public $name;
+    private $name;
 
     /**
      * @var string|null
      */
-    public $class;
+    private $className;
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function name(string $name): Definition
+    {
+        $name = trim($name);
+        if (!$name) {
+            throw new DefinitionBuilderException('$name не может быть пустым');
+        }
+
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getClassName(): ?string
+    {
+        return $this->className;
+    }
+
+    public function className(string $className): Definition
+    {
+        $className = trim($className);
+        if (!$className) {
+            throw new DefinitionBuilderException('$className не может быть пустым');
+        }
+
+        $this->className = $className;
+
+        return $this;
+    }
 
     /**
      * @inheritDoc
@@ -25,10 +59,10 @@ class Definition implements DefinitionInterface
     public function validate(): bool
     {
         if (!$this->name) {
-            throw new NoValidDefinitionException('Обязательный параметр name');
+            throw new NoValidDefinitionException('Обязательный параметр name не задан');
         }
-        if (!$this->class) {
-            throw new NoValidDefinitionException('Обязательный параметр class');
+        if (!$this->className) {
+            throw new NoValidDefinitionException('Обязательный параметр className не задан');
         }
 
         return true;

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Fi1a\Unit\DI;
 
 use Fi1a\DI\Definition;
+use Fi1a\DI\DefinitionBuilderException;
 use Fi1a\DI\NoValidDefinitionException;
 use Fi1a\Unit\DI\Fixtures\ClassA;
+use Fi1a\Unit\DI\Fixtures\ClassAInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -31,8 +33,19 @@ class DefinitionTest extends TestCase
     {
         $this->expectException(NoValidDefinitionException::class);
         $definition = new Definition();
-        $definition->name = 'name';
+        $definition->name(ClassAInterface::class);
         $definition->validate();
+    }
+
+    /**
+     * Пустое имя
+     */
+    public function testNameEmpty()
+    {
+        $this->expectException(DefinitionBuilderException::class);
+
+        $definition = new Definition();
+        $definition->name('');
     }
 
     /**
@@ -42,8 +55,19 @@ class DefinitionTest extends TestCase
     {
         $this->expectException(NoValidDefinitionException::class);
         $definition = new Definition();
-        $definition->class = ClassA::class;
+        $definition->className(ClassA::class);
         $definition->validate();
+    }
+
+    /**
+     * Пустой класс
+     */
+    public function testClassNameEmpty()
+    {
+        $this->expectException(DefinitionBuilderException::class);
+
+        $definition = new Definition();
+        $definition->className('');
     }
 
     /**
@@ -52,8 +76,8 @@ class DefinitionTest extends TestCase
     public function testValidateNameAndClass()
     {
         $definition = new Definition();
-        $definition->name = 'name';
-        $definition->class = ClassA::class;
+        $definition->name(ClassAInterface::class);
+        $definition->className(ClassA::class);
         $this->assertTrue($definition->validate());
     }
 }
