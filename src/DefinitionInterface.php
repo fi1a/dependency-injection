@@ -19,7 +19,7 @@ interface DefinitionInterface
      *
      * @return $this
      */
-    public function name(?string $name);
+    public function name(string $name);
 
     /**
      * Возвращает название класса
@@ -31,7 +31,7 @@ interface DefinitionInterface
      *
      * @return $this
      */
-    public function className(?string $className);
+    public function className(string $className);
 
     /**
      * Осуществляет валидацию определения

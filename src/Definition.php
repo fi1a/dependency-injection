@@ -24,8 +24,13 @@ class Definition implements DefinitionInterface
         return $this->name;
     }
 
-    public function name(?string $name): Definition
+    public function name(string $name): Definition
     {
+        $name = trim($name);
+        if (!$name) {
+            throw new DefinitionBuilderException('$name не может быть пустым');
+        }
+
         $this->name = $name;
 
         return $this;
@@ -36,8 +41,13 @@ class Definition implements DefinitionInterface
         return $this->className;
     }
 
-    public function className(?string $className): Definition
+    public function className(string $className): Definition
     {
+        $className = trim($className);
+        if (!$className) {
+            throw new DefinitionBuilderException('$className не может быть пустым');
+        }
+
         $this->className = $className;
 
         return $this;

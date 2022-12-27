@@ -16,11 +16,6 @@ class DefinitionBuilder implements DefinitionBuilderInterface
 
     protected function __construct(string $name)
     {
-        $name = trim($name);
-        if (!$name) {
-            throw new DefinitionBuilderException('$name не может быть пустым');
-        }
-
         $this->definition = new Definition();
         $this->definition->name($name);
     }
@@ -38,10 +33,6 @@ class DefinitionBuilder implements DefinitionBuilderInterface
      */
     public function defineClass(string $className)
     {
-        $className = trim($className);
-        if (!$className) {
-            throw new DefinitionBuilderException('$className не может быть пустым');
-        }
         $this->definition->className($className);
 
         return $this;
