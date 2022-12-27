@@ -6,7 +6,10 @@ namespace Fi1a\Unit\DI;
 
 use Fi1a\DI\ContainerConfig;
 use Fi1a\DI\ContainerConfigInterface;
-use Fi1a\DI\Definition;
+use Fi1a\DI\DefinitionBuilder;
+use Fi1a\DI\NoValidDefinitionException;
+use Fi1a\Unit\DI\Fixtures\ClassA;
+use Fi1a\Unit\DI\Fixtures\ClassAInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,7 +31,24 @@ class ContainerConfigTest extends TestCase
     public function testDefinition()
     {
         $containerConfig = $this->getContainerConfig();
-        $containerConfig->addDefinition(new Definition());
+        $containerConfig->addDefinition(
+            DefinitionBuilder::build(ClassAInterface::class)
+            ->defineClass(ClassA::class)
+            ->getDefinition()
+        );
         $this->assertCount(1, $containerConfig->getDefinitions());
+    }
+
+    /**
+     * Определения
+     */
+    public function testDefinitionValidate()
+    {
+        $this->expectException(NoValidDefinitionException::class);
+        $containerConfig = $this->getContainerConfig();
+        $containerConfig->addDefinition(
+            DefinitionBuilder::build(ClassAInterface::class)
+                ->getDefinition()
+        );
     }
 }

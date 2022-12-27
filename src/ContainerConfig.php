@@ -24,7 +24,8 @@ class ContainerConfig implements ContainerConfigInterface
      */
     public function addDefinition(DefinitionInterface $definition)
     {
-        $this->definitions->add($definition);
+        $definition->validate();
+        $this->definitions[(string) $definition->getName()] = $definition;
 
         return $this;
     }
