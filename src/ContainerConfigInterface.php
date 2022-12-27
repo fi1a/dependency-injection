@@ -15,4 +15,9 @@ interface ContainerConfigInterface
      * @return $this
      */
     public function addDefinition(DefinitionInterface $definition);
+
+    /**
+     * Возвращает коллекцию определений
+     */
+    public function getDefinitions(): DefinitionCollectionInterface;
 }
