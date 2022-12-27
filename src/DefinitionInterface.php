@@ -12,5 +12,5 @@ interface DefinitionInterface
     /**
      * Осуществляет валидацию определения
      */
-    public function validate(): void;
+    public function validate(): bool;
 }
