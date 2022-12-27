@@ -19,11 +19,17 @@ class Definition implements DefinitionInterface
      */
     private $className;
 
+    /**
+     * @inheritDoc
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function name(string $name): Definition
     {
         $name = trim($name);
@@ -36,11 +42,17 @@ class Definition implements DefinitionInterface
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getClassName(): ?string
     {
         return $this->className;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function className(string $className): Definition
     {
         $className = trim($className);
