@@ -7,12 +7,12 @@ namespace Fi1a\DI;
 /**
  * Конфигурирует определение
  */
-interface BuilderDefinitionInterface
+interface DefinitionBuilderInterface
 {
     /**
      * Фабричный метод
      */
-    public static function build(string $name): BuilderDefinitionInterface;
+    public static function build(string $name): DefinitionBuilderInterface;
 
     /**
      * Определяет класс

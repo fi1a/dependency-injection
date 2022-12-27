@@ -31,7 +31,7 @@ class DefinitionTest extends TestCase
     {
         $this->expectException(NoValidDefinitionException::class);
         $definition = new Definition();
-        $definition->name = 'name';
+        $definition->name('name');
         $definition->validate();
     }
 
@@ -42,7 +42,7 @@ class DefinitionTest extends TestCase
     {
         $this->expectException(NoValidDefinitionException::class);
         $definition = new Definition();
-        $definition->class = ClassA::class;
+        $definition->className(ClassA::class);
         $definition->validate();
     }
 
@@ -52,8 +52,8 @@ class DefinitionTest extends TestCase
     public function testValidateNameAndClass()
     {
         $definition = new Definition();
-        $definition->name = 'name';
-        $definition->class = ClassA::class;
+        $definition->name('name');
+        $definition->className(ClassA::class);
         $this->assertTrue($definition->validate());
     }
 }
