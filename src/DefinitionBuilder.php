@@ -71,6 +71,16 @@ class DefinitionBuilder implements DefinitionBuilderInterface
     /**
      * @inheritDoc
      */
+    public function defineFactory($closure)
+    {
+        $this->definition->factory($closure);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getDefinition(): DefinitionInterface
     {
         return $this->definition;

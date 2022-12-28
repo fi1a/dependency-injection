@@ -49,6 +49,15 @@ interface DefinitionBuilderInterface
     public function defineMethod(string $name, array $parameters = []);
 
     /**
+     * Определяет фабричный метод
+     *
+     * @param callable|\Closure|null $closure
+     *
+     * @return $this
+     */
+    public function defineFactory($closure);
+
+    /**
      * Возвращает определение
      */
     public function getDefinition(): DefinitionInterface;
