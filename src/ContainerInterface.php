@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Fi1a\DI;
 
+use Fi1a\Hydrator\HydratorInterface;
+
 /**
  * Контейнер
  */
 interface ContainerInterface
 {
-    public function __construct(ContainerConfigInterface $config);
+    public function __construct(ContainerConfigInterface $config, ?HydratorInterface $hydrator = null);
 
     /**
      * Возврашщает конфиг
      */
-    public function getConfig(): ContainerConfigInterface;
+    public function config(): ContainerConfigInterface;
 
     /**
      * Возвращает объект на основе определения
-     *
-     * @return mixed
      */
-    public function get(string $name);
+    public function get(string $name): object;
 
     /**
      * Проверяет наличие определения
