@@ -32,6 +32,11 @@ class Definition implements DefinitionInterface
     private $properties = [];
 
     /**
+     * @var mixed[]
+     */
+    private $methods = [];
+
+    /**
      * @inheritDoc
      */
     public function getName(): ?string
@@ -132,6 +137,43 @@ class Definition implements DefinitionInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function method(string $name, array $parameters = [])
+    {
+        $name = trim($name);
+        if (!$name) {
+            throw new NoValidDefinitionException('$name не может быть пустым');
+        }
+
+        $this->methods[$name] = $parameters;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function methods(array $methods)
+    {
+        $this->methods = [];
+        /** @var mixed $value */
+        foreach ($methods as $name => $value) {
+            $this->method((string) $name, (array) $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMethods(): array
+    {
+        return $this->methods;
     }
 
     /**

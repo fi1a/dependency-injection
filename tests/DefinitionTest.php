@@ -165,4 +165,48 @@ class DefinitionTest extends TestCase
         $definition = new Definition();
         $definition->properties(['' => null]);
     }
+
+    /**
+     * Метод, который необходимо вызвать
+     */
+    public function testMethod(): void
+    {
+        $definition = new Definition();
+        $definition->method('setX', [1, 2, 3])
+            ->method('setY', [true]);
+        $this->assertEquals([
+            'setX' => [1, 2, 3],
+            'setY' => [true],
+        ], $definition->getMethods());
+        $definition->methods([]);
+        $this->assertEquals([], $definition->getMethods());
+        $definition->methods([
+            'setX' => [1, 2, 3],
+        ]);
+        $this->assertEquals([
+            'setX' => [1, 2, 3],
+        ], $definition->getMethods());
+    }
+
+    /**
+     * Свойства
+     */
+    public function testMethodNameException(): void
+    {
+        $this->expectException(NoValidDefinitionException::class);
+
+        $definition = new Definition();
+        $definition->method('', []);
+    }
+
+    /**
+     * Свойства
+     */
+    public function testMethodsNameException(): void
+    {
+        $this->expectException(NoValidDefinitionException::class);
+
+        $definition = new Definition();
+        $definition->methods(['' => []]);
+    }
 }
