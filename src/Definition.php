@@ -199,6 +199,7 @@ class Definition implements DefinitionInterface
         $this->factory = $closure;
         $this->className = null;
         $this->object = null;
+        $this->constructor = null;
 
         return $this;
     }
@@ -219,6 +220,7 @@ class Definition implements DefinitionInterface
         $this->object = $object;
         $this->className = null;
         $this->factory = null;
+        $this->constructor = null;
 
         return $this;
     }
