@@ -7,7 +7,7 @@ namespace Fi1a\Unit\DI;
 use Fi1a\DI\ContainerConfig;
 use Fi1a\DI\ContainerConfigInterface;
 use Fi1a\DI\DefinitionBuilder;
-use Fi1a\DI\NoValidDefinitionException;
+use Fi1a\DI\Exceptions\NoValidDefinitionException;
 use Fi1a\Unit\DI\Fixtures\ClassA;
 use Fi1a\Unit\DI\Fixtures\ClassAInterface;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +28,7 @@ class ContainerConfigTest extends TestCase
     /**
      * Определения
      */
-    public function testDefinition()
+    public function testDefinition(): void
     {
         $containerConfig = $this->getContainerConfig();
         $containerConfig->addDefinition(
@@ -42,7 +42,7 @@ class ContainerConfigTest extends TestCase
     /**
      * Определения
      */
-    public function testDefinitionValidate()
+    public function testDefinitionValidate(): void
     {
         $this->expectException(NoValidDefinitionException::class);
         $containerConfig = $this->getContainerConfig();

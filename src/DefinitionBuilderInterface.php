@@ -22,6 +22,24 @@ interface DefinitionBuilderInterface
     public function defineClass(string $className);
 
     /**
+     * Определяет параметры конструктора
+     *
+     * @param mixed[] $constructor
+     *
+     * @return $this
+     */
+    public function defineConstructor(array $constructor);
+
+    /**
+     * Определяет свойство, которое следует установить
+     *
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function defineProperty(string $name, $value);
+
+    /**
      * Возвращает определение
      */
     public function getDefinition(): DefinitionInterface;

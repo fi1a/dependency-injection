@@ -34,6 +34,45 @@ interface DefinitionInterface
     public function className(string $className);
 
     /**
+     * Параметры конструктора
+     *
+     * @return mixed[]|null
+     */
+    public function getConstructor(): ?array;
+
+    /**
+     * Параметры конструктора
+     *
+     * @return $this
+     */
+    public function constructor(?array $constructor);
+
+    /**
+     * Возвращает свойства
+     *
+     * @return mixed[]
+     */
+    public function getProperties(): array;
+
+    /**
+     * Добавляет свойство
+     *
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function property(string $name, $value);
+
+    /**
+     * Устаналивает свойства
+     *
+     * @param mixed[] $properties
+     *
+     * @return $this
+     */
+    public function properties(array $properties);
+
+    /**
      * Осуществляет валидацию определения
      */
     public function validate(): bool;

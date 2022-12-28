@@ -41,6 +41,26 @@ class DefinitionBuilder implements DefinitionBuilderInterface
     /**
      * @inheritDoc
      */
+    public function defineConstructor(array $constructor)
+    {
+        $this->definition->constructor($constructor);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function defineProperty(string $name, $value)
+    {
+        $this->definition->property($name, $value);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getDefinition(): DefinitionInterface
     {
         return $this->definition;

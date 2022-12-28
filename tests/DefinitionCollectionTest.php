@@ -16,7 +16,7 @@ class DefinitionCollectionTest extends TestCase
     /**
      * Коллекция определений
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $collection = new DefinitionCollection();
         $collection[] = new Definition();
@@ -26,7 +26,7 @@ class DefinitionCollectionTest extends TestCase
     /**
      * Коллекция определений
      */
-    public function testTypeException()
+    public function testTypeException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $collection = new DefinitionCollection();

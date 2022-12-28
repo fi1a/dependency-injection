@@ -19,7 +19,7 @@ class DefinitionBuilderTest extends TestCase
     /**
      * Фабричный метод
      */
-    public function testBuild()
+    public function testBuild(): void
     {
         $this->assertInstanceOf(
             DefinitionBuilderInterface::class,
@@ -30,7 +30,7 @@ class DefinitionBuilderTest extends TestCase
     /**
      * Определить класс
      */
-    public function testDefineClass()
+    public function testDefineClass(): void
     {
         $definition = DefinitionBuilder::build(ClassAInterface::class)
             ->defineClass(ClassA::class)
@@ -39,5 +39,41 @@ class DefinitionBuilderTest extends TestCase
         $this->assertInstanceOf(DefinitionInterface::class, $definition);
         $this->assertEquals(ClassAInterface::class, $definition->getName());
         $this->assertEquals(ClassA::class, $definition->getClassName());
+    }
+
+    /**
+     * Определить класс
+     */
+    public function testDefineConstructor(): void
+    {
+        $definition = DefinitionBuilder::build(ClassAInterface::class)
+            ->defineClass(ClassA::class)
+            ->defineConstructor([1, true])
+            ->getDefinition();
+
+        $this->assertInstanceOf(DefinitionInterface::class, $definition);
+        $this->assertEquals(ClassAInterface::class, $definition->getName());
+        $this->assertEquals(ClassA::class, $definition->getClassName());
+        $this->assertEquals([1, true], $definition->getConstructor());
+    }
+
+    /**
+     * Определить свойства класса
+     */
+    public function testDefineProperty(): void
+    {
+        $definition = DefinitionBuilder::build(ClassAInterface::class)
+            ->defineClass(ClassA::class)
+            ->defineProperty('property1', 100)
+            ->defineProperty('property2', true)
+            ->getDefinition();
+
+        $this->assertInstanceOf(DefinitionInterface::class, $definition);
+        $this->assertEquals(ClassAInterface::class, $definition->getName());
+        $this->assertEquals(ClassA::class, $definition->getClassName());
+        $this->assertEquals([
+            'property1' => 100,
+            'property2' => true,
+        ], $definition->getProperties());
     }
 }
