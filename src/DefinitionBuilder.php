@@ -61,6 +61,16 @@ class DefinitionBuilder implements DefinitionBuilderInterface
     /**
      * @inheritDoc
      */
+    public function defineMethod(string $name, array $parameters = [])
+    {
+        $this->definition->method($name, $parameters);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getDefinition(): DefinitionInterface
     {
         return $this->definition;

@@ -76,4 +76,24 @@ class DefinitionBuilderTest extends TestCase
             'property2' => true,
         ], $definition->getProperties());
     }
+
+    /**
+     * Определить вызываемый метод класса
+     */
+    public function testDefineMethod(): void
+    {
+        $definition = DefinitionBuilder::build(ClassAInterface::class)
+            ->defineClass(ClassA::class)
+            ->defineMethod('setProperty1', [100])
+            ->defineMethod('setProperty2', [true])
+            ->getDefinition();
+
+        $this->assertInstanceOf(DefinitionInterface::class, $definition);
+        $this->assertEquals(ClassAInterface::class, $definition->getName());
+        $this->assertEquals(ClassA::class, $definition->getClassName());
+        $this->assertEquals([
+            'setProperty1' => [100],
+            'setProperty2' => [true],
+        ], $definition->getMethods());
+    }
 }
