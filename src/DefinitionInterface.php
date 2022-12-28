@@ -114,6 +114,18 @@ interface DefinitionInterface
     public function getFactory();
 
     /**
+     * Устанавливает объект
+     *
+     * @return $this
+     */
+    public function object(?object $object);
+
+    /**
+     * Возвращает объект
+     */
+    public function getObject(): ?object;
+
+    /**
      * Осуществляет валидацию определения
      */
     public function validate(): bool;

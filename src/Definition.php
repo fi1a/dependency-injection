@@ -42,6 +42,11 @@ class Definition implements DefinitionInterface
     private $factory;
 
     /**
+     * @var object|null
+     */
+    private $object;
+
+    /**
      * @inheritDoc
      */
     public function getName(): ?string
@@ -86,6 +91,7 @@ class Definition implements DefinitionInterface
 
         $this->className = $className;
         $this->factory = null;
+        $this->object = null;
 
         return $this;
     }
@@ -192,6 +198,7 @@ class Definition implements DefinitionInterface
         }
         $this->factory = $closure;
         $this->className = null;
+        $this->object = null;
 
         return $this;
     }
@@ -207,14 +214,34 @@ class Definition implements DefinitionInterface
     /**
      * @inheritDoc
      */
+    public function object(?object $object)
+    {
+        $this->object = $object;
+        $this->className = null;
+        $this->factory = null;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getObject(): ?object
+    {
+        return $this->object;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function validate(): bool
     {
         if (!$this->name) {
             throw new NoValidDefinitionException('Обязательный параметр name не задан');
         }
-        if (!$this->className && !$this->factory) {
+        if (!$this->className && !$this->factory && !$this->object) {
             throw new NoValidDefinitionException(
-                'Не задан один из обязательных параметров (className, factory)'
+                'Не задан один из обязательных параметров (className, factory, object)'
             );
         }
 

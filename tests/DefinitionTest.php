@@ -8,6 +8,7 @@ use Fi1a\DI\Definition;
 use Fi1a\DI\Exceptions\NoValidDefinitionException;
 use Fi1a\Unit\DI\Fixtures\ClassA;
 use Fi1a\Unit\DI\Fixtures\ClassAInterface;
+use Fi1a\Unit\DI\Fixtures\ClassB;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -266,5 +267,44 @@ class DefinitionTest extends TestCase
         $definition->className(ClassA::class);
         $this->assertEquals(ClassA::class, $definition->getClassName());
         $this->assertNull($definition->getFactory());
+    }
+
+    /**
+     * Объект
+     */
+    public function testObject(): void
+    {
+        $object = new ClassB();
+        $definition = new Definition();
+        $definition->object($object);
+        $this->assertEquals($object, $definition->getObject());
+    }
+
+    /**
+     * Сбрасывается фабричного метода при установке название класса
+     */
+    public function testSetClassNameNullObject(): void
+    {
+        $object = new ClassB();
+        $definition = new Definition();
+        $definition->object($object);
+        $this->assertEquals($object, $definition->getObject());
+        $definition->className(ClassA::class);
+        $this->assertEquals(ClassA::class, $definition->getClassName());
+        $this->assertNull($definition->getObject());
+    }
+
+    /**
+     * Сбрасывается фабричного метода при установке название класса
+     */
+    public function testSetObjectNullClassName(): void
+    {
+        $object = new ClassB();
+        $definition = new Definition();
+        $definition->className(ClassA::class);
+        $this->assertEquals(ClassA::class, $definition->getClassName());
+        $definition->object($object);
+        $this->assertEquals($object, $definition->getObject());
+        $this->assertNull($definition->getClassName());
     }
 }
