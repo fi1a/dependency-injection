@@ -209,4 +209,62 @@ class DefinitionTest extends TestCase
         $definition = new Definition();
         $definition->methods(['' => []]);
     }
+
+    /**
+     * Возвращает фабричный метод
+     */
+    public function testFactoryClosure(): void
+    {
+        $func = function () {
+        };
+        $definition = new Definition();
+        $definition->factory($func);
+        $this->assertEquals($func, $definition->getFactory());
+    }
+
+    /**
+     * Возвращает фабричный метод
+     */
+    public function testFactoryCallable(): void
+    {
+        $definition = new Definition();
+        $definition->factory([$this, 'testFactoryCallable']);
+        $this->assertEquals([$this, 'testFactoryCallable'], $definition->getFactory());
+    }
+
+    /**
+     * Возвращает фабричный метод
+     */
+    public function testFactoryException(): void
+    {
+        $this->expectException(NoValidDefinitionException::class);
+        $definition = new Definition();
+        $definition->factory($this);
+    }
+
+    /**
+     * Сбрасывается название класса при установке фабричного метода
+     */
+    public function testSetFactoryNullClassName(): void
+    {
+        $definition = new Definition();
+        $definition->className(ClassA::class);
+        $this->assertEquals(ClassA::class, $definition->getClassName());
+        $definition->factory([$this, 'testFactoryCallable']);
+        $this->assertEquals([$this, 'testFactoryCallable'], $definition->getFactory());
+        $this->assertNull($definition->getClassName());
+    }
+
+    /**
+     * Сбрасывается фабричного метода при установке название класса
+     */
+    public function testSetClassNameNullFactory(): void
+    {
+        $definition = new Definition();
+        $definition->factory([$this, 'testFactoryCallable']);
+        $this->assertEquals([$this, 'testFactoryCallable'], $definition->getFactory());
+        $definition->className(ClassA::class);
+        $this->assertEquals(ClassA::class, $definition->getClassName());
+        $this->assertNull($definition->getFactory());
+    }
 }
