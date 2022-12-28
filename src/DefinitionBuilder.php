@@ -81,6 +81,16 @@ class DefinitionBuilder implements DefinitionBuilderInterface
     /**
      * @inheritDoc
      */
+    public function defineObject(object $object)
+    {
+        $this->definition->object($object);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getDefinition(): DefinitionInterface
     {
         return $this->definition;

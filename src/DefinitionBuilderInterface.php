@@ -58,6 +58,13 @@ interface DefinitionBuilderInterface
     public function defineFactory($closure);
 
     /**
+     * Определяет объект
+     *
+     * @return $this
+     */
+    public function defineObject(object $object);
+
+    /**
      * Возвращает определение
      */
     public function getDefinition(): DefinitionInterface;
