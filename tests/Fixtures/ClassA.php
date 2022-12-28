@@ -13,4 +13,14 @@ class ClassA extends AbstractClassA
     public function __construct(ClassB $classB, int $parameter1 = 1)
     {
     }
+
+    public function setProperty1(int $value)
+    {
+        $this->property1 = $value;
+    }
+
+    public function setProperty2(bool $value)
+    {
+        $this->property2 = $value;
+    }
 }

@@ -89,8 +89,24 @@ class Container implements ContainerInterface
         if (count($definition->getProperties())) {
             $this->setPropertiesToInstance($definition->getProperties(), $instance);
         }
+        if (count($definition->getMethods())) {
+            $this->callMethodsInInstance($definition->getMethods(), $instance);
+        }
 
         return $instance;
+    }
+
+    /**
+     * Вызвать методы у объекта
+     *
+     * @param mixed[]  $methods
+     */
+    private function callMethodsInInstance(array $methods, object $instance): void
+    {
+        /** @var mixed[] $parameters */
+        foreach ($methods as $method => $parameters) {
+            call_user_func_array([$instance, (string) $method], $parameters);
+        }
     }
 
     /**
