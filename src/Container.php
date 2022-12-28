@@ -88,6 +88,8 @@ class Container implements ContainerInterface
             $instance = $this->factoryByClassName($definition);
         } elseif ($definition->getFactory()) {
             $instance = $this->factoryByClosure($definition);
+        } elseif ($definition->getObject()) {
+            $instance = $definition->getObject();
         }
         assert(is_object($instance));
         if (count($definition->getProperties())) {

@@ -204,9 +204,7 @@ class ContainerTest extends TestCase
                 })
                 ->getDefinition()
         );
-        /**
-         * @var ClassA $instance
-         */
+        /** @var ClassA $instance */
         $instance = $container->get(ClassAInterface::class);
         $this->assertInstanceOf(ClassAInterface::class, $instance);
         $this->assertEquals(100, $instance->property1);
@@ -224,9 +222,7 @@ class ContainerTest extends TestCase
                 ->defineFactory([new FactoryA(), 'factory'])
                 ->getDefinition()
         );
-        /**
-         * @var ClassA $instance
-         */
+        /** @var ClassA $instance */
         $instance = $container->get(ClassAInterface::class);
         $this->assertInstanceOf(ClassAInterface::class, $instance);
         $this->assertEquals(100, $instance->property1);
@@ -244,12 +240,25 @@ class ContainerTest extends TestCase
                 ->defineFactory([FactoryA::class, 'factoryStatic'])
                 ->getDefinition()
         );
-        /**
-         * @var ClassA $instance
-         */
+        /** @var ClassA $instance */
         $instance = $container->get(ClassAInterface::class);
         $this->assertInstanceOf(ClassAInterface::class, $instance);
         $this->assertEquals(100, $instance->property1);
         $this->assertEquals(true, $instance->property2);
+    }
+
+    /**
+     * Возвращает объект
+     */
+    public function testGetObject(): void
+    {
+        $container = new Container(new ContainerConfig());
+        $container->config()->addDefinition(
+            DefinitionBuilder::build(ClassBInterface::class)
+                ->defineObject(new ClassB())
+                ->getDefinition()
+        );
+        $instance = $container->get(ClassBInterface::class);
+        $this->assertInstanceOf(ClassBInterface::class, $instance);
     }
 }
