@@ -40,6 +40,15 @@ interface DefinitionBuilderInterface
     public function defineProperty(string $name, $value);
 
     /**
+     * Определяет вызываемый метод
+     *
+     * @param mixed[]  $parameters
+     *
+     * @return $this
+     */
+    public function defineMethod(string $name, array $parameters = []);
+
+    /**
      * Возвращает определение
      */
     public function getDefinition(): DefinitionInterface;
