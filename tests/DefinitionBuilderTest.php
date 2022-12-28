@@ -9,6 +9,8 @@ use Fi1a\DI\DefinitionBuilderInterface;
 use Fi1a\DI\DefinitionInterface;
 use Fi1a\Unit\DI\Fixtures\ClassA;
 use Fi1a\Unit\DI\Fixtures\ClassAInterface;
+use Fi1a\Unit\DI\Fixtures\ClassB;
+use Fi1a\Unit\DI\Fixtures\ClassBInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -105,11 +107,24 @@ class DefinitionBuilderTest extends TestCase
         $func = function () {
         };
         $definition = DefinitionBuilder::build(ClassAInterface::class)
-            ->defineClass(ClassA::class)
             ->defineFactory($func)
             ->getDefinition();
 
         $this->assertInstanceOf(DefinitionInterface::class, $definition);
         $this->assertEquals($func, $definition->getFactory());
+    }
+
+    /**
+     * Определить объект
+     */
+    public function testDefineObject(): void
+    {
+        $object = new ClassB();
+        $definition = DefinitionBuilder::build(ClassBInterface::class)
+            ->defineObject($object)
+            ->getDefinition();
+
+        $this->assertInstanceOf(DefinitionInterface::class, $definition);
+        $this->assertEquals($object, $definition->getObject());
     }
 }
