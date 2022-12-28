@@ -162,4 +162,27 @@ class ContainerTest extends TestCase
         $this->assertEquals(100, $instance->property1);
         $this->assertEquals(true, $instance->property2);
     }
+
+    /**
+     * Возвращает объект
+     */
+    public function testGetWithMethods(): void
+    {
+        $container = new Container(new ContainerConfig());
+        $container->config()->addDefinition(
+            DefinitionBuilder::build(ClassAInterface::class)
+                ->defineClass(ClassA::class)
+                ->defineMethod('setProperty1', [100])
+                ->defineMethod('setProperty2', [true])
+                ->getDefinition()
+        );
+
+        /**
+         * @var ClassA $instance
+         */
+        $instance = $container->get(ClassAInterface::class);
+        $this->assertInstanceOf(ClassAInterface::class, $instance);
+        $this->assertEquals(100, $instance->property1);
+        $this->assertEquals(true, $instance->property2);
+    }
 }
