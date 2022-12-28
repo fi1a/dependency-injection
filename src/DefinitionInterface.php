@@ -98,6 +98,22 @@ interface DefinitionInterface
     public function getMethods(): array;
 
     /**
+     * Устанавливает фабричный метод
+     *
+     * @param callable|\Closure|null $closure
+     *
+     * @return $this
+     */
+    public function factory($closure);
+
+    /**
+     * Возвращает фабричный метод
+     *
+     * @return callable|\Closure|null
+     */
+    public function getFactory();
+
+    /**
      * Осуществляет валидацию определения
      */
     public function validate(): bool;
