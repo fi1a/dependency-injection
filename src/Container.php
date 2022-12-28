@@ -8,6 +8,8 @@ use Fi1a\DI\Exceptions\NotFoundException;
 use Fi1a\Hydrator\Hydrator;
 use Fi1a\Hydrator\HydratorInterface;
 use ReflectionClass;
+use ReflectionFunction;
+use ReflectionMethod;
 
 /**
  * Контейнер
@@ -84,6 +86,8 @@ class Container implements ContainerInterface
         $instance = null;
         if ($definition->getClassName()) {
             $instance = $this->factoryByClassName($definition);
+        } elseif ($definition->getFactory()) {
+            $instance = $this->factoryByClosure($definition);
         }
         assert(is_object($instance));
         if (count($definition->getProperties())) {
@@ -131,6 +135,7 @@ class Container implements ContainerInterface
         $reflection = new ReflectionClass($definition->getClassName());
         $constructor = $reflection->getConstructor();
         $constructorParameters = $definition->getConstructor();
+
         /** @var mixed[] $parameters */
         $parameters = [];
         if ($constructor) {
@@ -159,5 +164,47 @@ class Container implements ContainerInterface
         }
 
         return $reflection->newInstance(...$parameters);
+    }
+
+    /**
+     * Вызов фабричного метода
+     *
+     * @psalm-suppress MixedInferredReturnType
+     */
+    private function factoryByClosure(DefinitionInterface $definition): object
+    {
+        $function = $definition->getFactory();
+        assert(is_callable($function));
+        if (is_array($function)) {
+            $reflection = new ReflectionMethod(
+                (is_object($function[0]) ? get_class($function[0]) : $function[0])
+                . '::' . $function[1]
+            );
+        } else {
+            /** @psalm-suppress ArgumentTypeCoercion */
+            $reflection = new ReflectionFunction($function);
+        }
+
+        /** @var mixed[] $parameters */
+        $parameters = [];
+        foreach ($reflection->getParameters() as $parameter) {
+            $type = $parameter->getType();
+            /** @psalm-suppress UndefinedMethod */
+            $parameterTypeName = $type ? (string) $type->getName() : null;
+            $value = null;
+            if ($parameter->isDefaultValueAvailable()) {
+                /** @var mixed $value */
+                $value = $parameter->getDefaultValue();
+            }
+            if ($parameterTypeName && class_exists($parameterTypeName)) {
+                $value = $this->get($parameterTypeName);
+            }
+
+            /** @psalm-suppress MixedAssignment */
+            $parameters[] = $value;
+        }
+
+        /** @psalm-suppress MixedReturnStatement */
+        return call_user_func_array($function, $parameters);
     }
 }

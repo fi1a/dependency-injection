@@ -15,6 +15,7 @@ use Fi1a\Unit\DI\Fixtures\ClassB;
 use Fi1a\Unit\DI\Fixtures\ClassBInterface;
 use Fi1a\Unit\DI\Fixtures\ClassC;
 use Fi1a\Unit\DI\Fixtures\ClassCInterface;
+use Fi1a\Unit\DI\Fixtures\FactoryA;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -177,6 +178,72 @@ class ContainerTest extends TestCase
                 ->getDefinition()
         );
 
+        /**
+         * @var ClassA $instance
+         */
+        $instance = $container->get(ClassAInterface::class);
+        $this->assertInstanceOf(ClassAInterface::class, $instance);
+        $this->assertEquals(100, $instance->property1);
+        $this->assertEquals(true, $instance->property2);
+    }
+
+    /**
+     * Возвращает объект созданный фабрикой
+     */
+    public function testGetWithFactoryClosure(): void
+    {
+        $container = new Container(new ContainerConfig());
+        $container->config()->addDefinition(
+            DefinitionBuilder::build(ClassAInterface::class)
+                ->defineFactory(function (ClassB $classB) {
+                    $instance = new ClassA($classB);
+                    $instance->property1 = 100;
+                    $instance->property2 = true;
+
+                    return $instance;
+                })
+                ->getDefinition()
+        );
+        /**
+         * @var ClassA $instance
+         */
+        $instance = $container->get(ClassAInterface::class);
+        $this->assertInstanceOf(ClassAInterface::class, $instance);
+        $this->assertEquals(100, $instance->property1);
+        $this->assertEquals(true, $instance->property2);
+    }
+
+    /**
+     * Возвращает объект созданный фабрикой
+     */
+    public function testGetWithFactory(): void
+    {
+        $container = new Container(new ContainerConfig());
+        $container->config()->addDefinition(
+            DefinitionBuilder::build(ClassAInterface::class)
+                ->defineFactory([new FactoryA(), 'factory'])
+                ->getDefinition()
+        );
+        /**
+         * @var ClassA $instance
+         */
+        $instance = $container->get(ClassAInterface::class);
+        $this->assertInstanceOf(ClassAInterface::class, $instance);
+        $this->assertEquals(100, $instance->property1);
+        $this->assertEquals(true, $instance->property2);
+    }
+
+    /**
+     * Возвращает объект созданный фабрикой
+     */
+    public function testGetWithStaticFactory(): void
+    {
+        $container = new Container(new ContainerConfig());
+        $container->config()->addDefinition(
+            DefinitionBuilder::build(ClassAInterface::class)
+                ->defineFactory([FactoryA::class, 'factoryStatic'])
+                ->getDefinition()
+        );
         /**
          * @var ClassA $instance
          */
