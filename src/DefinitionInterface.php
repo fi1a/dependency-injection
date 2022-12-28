@@ -73,6 +73,31 @@ interface DefinitionInterface
     public function properties(array $properties);
 
     /**
+     * Устанавливает метод, который необходимо вызвать
+     *
+     * @param mixed[]  $parameters
+     *
+     * @return $this
+     */
+    public function method(string $name, array $parameters = []);
+
+    /**
+     * Устанавливает методы, которые необходимо вызвать
+     *
+     * @param mixed[]  $methods
+     *
+     * @return $this
+     */
+    public function methods(array $methods);
+
+    /**
+     * Возвращает методы, которые необходимо вызвать
+     *
+     * @return mixed[]
+     */
+    public function getMethods(): array;
+
+    /**
      * Осуществляет валидацию определения
      */
     public function validate(): bool;
