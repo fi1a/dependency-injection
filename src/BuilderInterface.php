@@ -7,12 +7,14 @@ namespace Fi1a\DI;
 /**
  * Конфигурирует определение
  */
-interface DefinitionBuilderInterface
+interface BuilderInterface
 {
     /**
      * Фабричный метод
+     *
+     * @return static
      */
-    public static function build(string $name): DefinitionBuilderInterface;
+    public static function build(string $name);
 
     /**
      * Определяет класс
@@ -40,6 +42,15 @@ interface DefinitionBuilderInterface
     public function defineProperty(string $name, $value);
 
     /**
+     * Определяет свойства, которое следует установить
+     *
+     * @param mixed[] $properties
+     *
+     * @return $this
+     */
+    public function defineProperties(array $properties);
+
+    /**
      * Определяет вызываемый метод
      *
      * @param mixed[]  $parameters
@@ -47,6 +58,15 @@ interface DefinitionBuilderInterface
      * @return $this
      */
     public function defineMethod(string $name, array $parameters = []);
+
+    /**
+     * Определяет вызываемые методы
+     *
+     * @param mixed[]  $methods
+     *
+     * @return $this
+     */
+    public function defineMethods(array $methods);
 
     /**
      * Определяет фабричный метод

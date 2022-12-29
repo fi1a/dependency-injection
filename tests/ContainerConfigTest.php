@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Fi1a\Unit\DI;
 
+use Fi1a\DI\Builder;
 use Fi1a\DI\ContainerConfig;
 use Fi1a\DI\ContainerConfigInterface;
-use Fi1a\DI\DefinitionBuilder;
 use Fi1a\DI\Exceptions\NoValidDefinitionException;
 use Fi1a\Unit\DI\Fixtures\ClassA;
 use Fi1a\Unit\DI\Fixtures\ClassAInterface;
@@ -32,7 +32,7 @@ class ContainerConfigTest extends TestCase
     {
         $containerConfig = $this->getContainerConfig();
         $containerConfig->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
             ->defineClass(ClassA::class)
             ->getDefinition()
         );
@@ -47,7 +47,7 @@ class ContainerConfigTest extends TestCase
         $this->expectException(NoValidDefinitionException::class);
         $containerConfig = $this->getContainerConfig();
         $containerConfig->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
                 ->getDefinition()
         );
     }

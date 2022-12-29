@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Fi1a\Unit\DI;
 
-use Fi1a\DI\DefinitionBuilder;
-use Fi1a\DI\DefinitionBuilderInterface;
+use Fi1a\DI\Builder;
+use Fi1a\DI\BuilderInterface;
 use Fi1a\DI\DefinitionInterface;
 use Fi1a\Unit\DI\Fixtures\ClassA;
 use Fi1a\Unit\DI\Fixtures\ClassAInterface;
@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Конфигурирует определение
  */
-class DefinitionBuilderTest extends TestCase
+class BuilderTest extends TestCase
 {
     /**
      * Фабричный метод
@@ -24,8 +24,8 @@ class DefinitionBuilderTest extends TestCase
     public function testBuild(): void
     {
         $this->assertInstanceOf(
-            DefinitionBuilderInterface::class,
-            DefinitionBuilder::build(ClassAInterface::class)
+            BuilderInterface::class,
+            Builder::build(ClassAInterface::class)
         );
     }
 
@@ -34,7 +34,7 @@ class DefinitionBuilderTest extends TestCase
      */
     public function testDefineClass(): void
     {
-        $definition = DefinitionBuilder::build(ClassAInterface::class)
+        $definition = Builder::build(ClassAInterface::class)
             ->defineClass(ClassA::class)
             ->getDefinition();
 
@@ -48,7 +48,7 @@ class DefinitionBuilderTest extends TestCase
      */
     public function testDefineConstructor(): void
     {
-        $definition = DefinitionBuilder::build(ClassAInterface::class)
+        $definition = Builder::build(ClassAInterface::class)
             ->defineClass(ClassA::class)
             ->defineConstructor([1, true])
             ->getDefinition();
@@ -64,10 +64,32 @@ class DefinitionBuilderTest extends TestCase
      */
     public function testDefineProperty(): void
     {
-        $definition = DefinitionBuilder::build(ClassAInterface::class)
+        $definition = Builder::build(ClassAInterface::class)
             ->defineClass(ClassA::class)
             ->defineProperty('property1', 100)
             ->defineProperty('property2', true)
+            ->getDefinition();
+
+        $this->assertInstanceOf(DefinitionInterface::class, $definition);
+        $this->assertEquals(ClassAInterface::class, $definition->getName());
+        $this->assertEquals(ClassA::class, $definition->getClassName());
+        $this->assertEquals([
+            'property1' => 100,
+            'property2' => true,
+        ], $definition->getProperties());
+    }
+
+    /**
+     * Определить свойства класса
+     */
+    public function testDefineProperties(): void
+    {
+        $definition = Builder::build(ClassAInterface::class)
+            ->defineClass(ClassA::class)
+            ->defineProperties([
+                'property1' => 100,
+                'property2' => true,
+            ])
             ->getDefinition();
 
         $this->assertInstanceOf(DefinitionInterface::class, $definition);
@@ -84,10 +106,32 @@ class DefinitionBuilderTest extends TestCase
      */
     public function testDefineMethod(): void
     {
-        $definition = DefinitionBuilder::build(ClassAInterface::class)
+        $definition = Builder::build(ClassAInterface::class)
             ->defineClass(ClassA::class)
             ->defineMethod('setProperty1', [100])
             ->defineMethod('setProperty2', [true])
+            ->getDefinition();
+
+        $this->assertInstanceOf(DefinitionInterface::class, $definition);
+        $this->assertEquals(ClassAInterface::class, $definition->getName());
+        $this->assertEquals(ClassA::class, $definition->getClassName());
+        $this->assertEquals([
+            'setProperty1' => [100],
+            'setProperty2' => [true],
+        ], $definition->getMethods());
+    }
+
+    /**
+     * Определить вызываемый метод класса
+     */
+    public function testDefineMethods(): void
+    {
+        $definition = Builder::build(ClassAInterface::class)
+            ->defineClass(ClassA::class)
+            ->defineMethods([
+                'setProperty1' => [100],
+                'setProperty2' => [true],
+            ])
             ->getDefinition();
 
         $this->assertInstanceOf(DefinitionInterface::class, $definition);
@@ -106,7 +150,7 @@ class DefinitionBuilderTest extends TestCase
     {
         $func = function () {
         };
-        $definition = DefinitionBuilder::build(ClassAInterface::class)
+        $definition = Builder::build(ClassAInterface::class)
             ->defineFactory($func)
             ->getDefinition();
 
@@ -120,7 +164,7 @@ class DefinitionBuilderTest extends TestCase
     public function testDefineObject(): void
     {
         $object = new ClassB();
-        $definition = DefinitionBuilder::build(ClassBInterface::class)
+        $definition = Builder::build(ClassBInterface::class)
             ->defineObject($object)
             ->getDefinition();
 

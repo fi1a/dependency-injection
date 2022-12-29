@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Fi1a\Unit\DI;
 
+use Fi1a\DI\Builder;
 use Fi1a\DI\Container;
 use Fi1a\DI\ContainerConfig;
-use Fi1a\DI\DefinitionBuilder;
 use Fi1a\DI\Exceptions\NotFoundException;
 use Fi1a\Unit\DI\Fixtures\AbstractClassA;
 use Fi1a\Unit\DI\Fixtures\ClassA;
@@ -40,7 +40,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container(new ContainerConfig());
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
             ->defineClass(ClassA::class)
             ->getDefinition()
         );
@@ -55,7 +55,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container(new ContainerConfig());
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
                 ->defineClass(ClassA::class)
                 ->getDefinition()
         );
@@ -102,12 +102,12 @@ class ContainerTest extends TestCase
     {
         $container = new Container(new ContainerConfig());
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
                 ->defineClass(ClassA::class)
                 ->getDefinition()
         );
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassCInterface::class)
+            Builder::build(ClassCInterface::class)
                 ->defineClass(ClassC::class)
                 ->defineConstructor([1, true])
                 ->getDefinition()
@@ -123,12 +123,12 @@ class ContainerTest extends TestCase
     {
         $container = new Container(new ContainerConfig());
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
                 ->defineClass(ClassA::class)
                 ->getDefinition()
         );
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassCInterface::class)
+            Builder::build(ClassCInterface::class)
                 ->defineClass(ClassC::class)
                 ->defineConstructor([
                     'parameter1' => 1,
@@ -148,7 +148,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container(new ContainerConfig());
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
                 ->defineClass(ClassA::class)
                 ->defineProperty('property1', 100)
                 ->defineProperty('property2', true)
@@ -171,7 +171,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container(new ContainerConfig());
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
                 ->defineClass(ClassA::class)
                 ->defineMethod('setProperty1', [100])
                 ->defineMethod('setProperty2', [true])
@@ -194,7 +194,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container(new ContainerConfig());
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
                 ->defineFactory(function (ClassB $classB) {
                     $instance = new ClassA($classB);
                     $instance->property1 = 100;
@@ -218,7 +218,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container(new ContainerConfig());
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
                 ->defineFactory([new FactoryA(), 'factory'])
                 ->getDefinition()
         );
@@ -236,7 +236,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container(new ContainerConfig());
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassAInterface::class)
+            Builder::build(ClassAInterface::class)
                 ->defineFactory([FactoryA::class, 'factoryStatic'])
                 ->getDefinition()
         );
@@ -254,7 +254,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container(new ContainerConfig());
         $container->config()->addDefinition(
-            DefinitionBuilder::build(ClassBInterface::class)
+            Builder::build(ClassBInterface::class)
                 ->defineObject(new ClassB())
                 ->getDefinition()
         );

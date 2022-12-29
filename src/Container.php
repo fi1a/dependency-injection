@@ -57,7 +57,7 @@ class Container implements ContainerInterface
             if ($reflection->isAbstract() || $reflection->isInterface()) {
                 throw new NotFoundException(sprintf('Не удалось создать объект для "%s"', $name));
             }
-            $definition = DefinitionBuilder::build($name)
+            $definition = Builder::build($name)
                 ->defineClass($name)
                 ->getDefinition();
         }
