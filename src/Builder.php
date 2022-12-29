@@ -7,7 +7,7 @@ namespace Fi1a\DI;
 /**
  * Конфигурирует определение
  */
-class DefinitionBuilder implements DefinitionBuilderInterface
+class Builder implements BuilderInterface
 {
     /**
      * @var DefinitionInterface
@@ -23,9 +23,10 @@ class DefinitionBuilder implements DefinitionBuilderInterface
     /**
      * @inheritDoc
      */
-    public static function build(string $name): DefinitionBuilderInterface
+    public static function build(string $name)
     {
-        return new self($name);
+        /** @psalm-suppress UnsafeInstantiation */
+        return new static($name);
     }
 
     /**
@@ -61,9 +62,29 @@ class DefinitionBuilder implements DefinitionBuilderInterface
     /**
      * @inheritDoc
      */
+    public function defineProperties(array $properties)
+    {
+        $this->definition->properties($properties);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function defineMethod(string $name, array $parameters = [])
     {
         $this->definition->method($name, $parameters);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function defineMethods(array $methods)
+    {
+        $this->definition->methods($methods);
 
         return $this;
     }
