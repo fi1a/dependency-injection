@@ -15,6 +15,8 @@ use Fi1a\Unit\DI\Fixtures\ClassB;
 use Fi1a\Unit\DI\Fixtures\ClassBInterface;
 use Fi1a\Unit\DI\Fixtures\ClassC;
 use Fi1a\Unit\DI\Fixtures\ClassCInterface;
+use Fi1a\Unit\DI\Fixtures\ClassD;
+use Fi1a\Unit\DI\Fixtures\ClassDInterface;
 use Fi1a\Unit\DI\Fixtures\FactoryA;
 use PHPUnit\Framework\TestCase;
 
@@ -119,6 +121,26 @@ class ContainerTest extends TestCase
     /**
      * Возвращает объект
      */
+    public function testGetWithConstructorInterfaceExists(): void
+    {
+        $container = new Container(new ContainerConfig());
+        $container->config()->addDefinition(
+            Builder::build(ClassAInterface::class)
+                ->defineClass(ClassA::class)
+                ->getDefinition()
+        );
+        $container->config()->addDefinition(
+            Builder::build(ClassDInterface::class)
+                ->defineClass(ClassD::class)
+                ->getDefinition()
+        );
+
+        $this->assertInstanceOf(ClassDInterface::class, $container->get(ClassDInterface::class));
+    }
+
+    /**
+     * Возвращает объект
+     */
     public function testGetWithConstructorAssociative(): void
     {
         $container = new Container(new ContainerConfig());
@@ -196,6 +218,35 @@ class ContainerTest extends TestCase
         $container->config()->addDefinition(
             Builder::build(ClassAInterface::class)
                 ->defineFactory(function (ClassB $classB) {
+                    $instance = new ClassA($classB);
+                    $instance->property1 = 100;
+                    $instance->property2 = true;
+
+                    return $instance;
+                })
+                ->getDefinition()
+        );
+        /** @var ClassA $instance */
+        $instance = $container->get(ClassAInterface::class);
+        $this->assertInstanceOf(ClassAInterface::class, $instance);
+        $this->assertEquals(100, $instance->property1);
+        $this->assertEquals(true, $instance->property2);
+    }
+
+    /**
+     * Возвращает объект созданный фабрикой
+     */
+    public function testGetWithFactoryClosureInterfaceExists(): void
+    {
+        $container = new Container(new ContainerConfig());
+        $container->config()->addDefinition(
+            Builder::build(ClassBInterface::class)
+                ->defineClass(ClassB::class)
+                ->getDefinition()
+        );
+        $container->config()->addDefinition(
+            Builder::build(ClassAInterface::class)
+                ->defineFactory(function (ClassBInterface $classB) {
                     $instance = new ClassA($classB);
                     $instance->property1 = 100;
                     $instance->property2 = true;

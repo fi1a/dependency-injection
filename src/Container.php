@@ -153,7 +153,10 @@ class Container implements ContainerInterface
                 if (is_array($constructorParameters) && isset($constructorParameters[$parameter->getName()])) {
                     /** @var mixed $value */
                     $value = $constructorParameters[$parameter->getName()];
-                } elseif ($parameterTypeName && class_exists($parameterTypeName)) {
+                } elseif (
+                    $parameterTypeName
+                    && (class_exists($parameterTypeName) || interface_exists($parameterTypeName))
+                ) {
                     $value = $this->get($parameterTypeName);
                 } elseif (is_array($constructorParameters) && isset($constructorParameters[$index])) {
                     /** @var mixed $value */
@@ -198,7 +201,10 @@ class Container implements ContainerInterface
                 /** @var mixed $value */
                 $value = $parameter->getDefaultValue();
             }
-            if ($parameterTypeName && class_exists($parameterTypeName)) {
+            if (
+                $parameterTypeName
+                && (class_exists($parameterTypeName) || interface_exists($parameterTypeName))
+            ) {
                 $value = $this->get($parameterTypeName);
             }
 
